@@ -8,10 +8,9 @@ struct TransactionsView: View {
     @State private var searchText = ""
     @State private var selectedType: TransactionType? = nil
     @State private var selectedCategoryID: UUID? = nil
-    @State private var showFilters = false
     @State private var editMode = false
     @State private var selectedIDs: Set<UUID> = []
-    @State private var showBulkActions = false
+    @State private var transactionToEdit: Transaction? = nil
 
     var filtered: [Transaction] {
         store.transactions
@@ -130,10 +129,14 @@ struct TransactionsView: View {
                                         editMode: editMode,
                                         isSelected: selectedIDs.contains(tx.id)
                                     ) {
-                                        if selectedIDs.contains(tx.id) {
-                                            selectedIDs.remove(tx.id)
+                                        if editMode {
+                                            if selectedIDs.contains(tx.id) {
+                                                selectedIDs.remove(tx.id)
+                                            } else {
+                                                selectedIDs.insert(tx.id)
+                                            }
                                         } else {
-                                            selectedIDs.insert(tx.id)
+                                            transactionToEdit = tx
                                         }
                                     }
                                     .swipeActions(edge: .trailing) {
@@ -169,6 +172,10 @@ struct TransactionsView: View {
             .navigationBarHidden(true)
         }
         .navigationViewStyle(.stack)
+        .sheet(item: $transactionToEdit) { tx in
+            EditTransactionView(transaction: tx)
+                .environmentObject(store)
+        }
     }
 }
 

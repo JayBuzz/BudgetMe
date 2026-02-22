@@ -6,6 +6,7 @@ import SwiftUI
 struct DashboardView: View {
     @EnvironmentObject var store: BudgetStore
     @State private var showMonthPicker = false
+    @State private var showSettings = false
 
     var monthFormatter: DateFormatter {
         let f = DateFormatter()
@@ -70,8 +71,22 @@ struct DashboardView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationBarHidden(true)
+            .overlay(alignment: .topTrailing) {
+                Button {
+                    showSettings = true
+                } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 20))
+                        .foregroundColor(.white.opacity(0.9))
+                        .padding(16)
+                }
+            }
         }
         .navigationViewStyle(.stack)
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+                .environmentObject(store)
+        }
     }
 }
 

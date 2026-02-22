@@ -28,9 +28,13 @@ class BudgetStore: ObservableObject {
 
     init() {
         load()
+        #if DEBUG
+        // Development: seed sample data on first launch so we can work with dummy data.
         if accounts.isEmpty && categories.isEmpty {
             seedSampleData()
         }
+        #endif
+        // Release / TestFlight / Archive: start with empty data for real user testing.
     }
 
     // MARK: - Computed Properties
