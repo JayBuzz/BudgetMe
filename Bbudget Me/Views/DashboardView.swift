@@ -14,7 +14,7 @@ struct DashboardView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
                     // Header gradient hero
@@ -71,6 +71,7 @@ struct DashboardView: View {
             .background(Color(.systemGroupedBackground))
             .navigationBarHidden(true)
         }
+        .navigationViewStyle(.stack)
     }
 }
 
@@ -105,7 +106,6 @@ struct HeroHeaderView: View {
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.white.opacity(0.7))
                     .textCase(.uppercase)
-                    .tracking(1.5)
 
                 Text(store.totalNetWorth.formatted(.currency(code: "USD")))
                     .font(.system(size: 38, weight: .bold, design: .rounded))
@@ -236,7 +236,7 @@ struct CashFlowCard: View {
                             .frame(height: 28)
                         RoundedRectangle(cornerRadius: 4)
                             .fill(Color(hex: "#10B981")!)
-                            .frame(width: .infinity, height: 28)
+                            .frame(maxWidth: .infinity, minHeight: 28, maxHeight: 28)
                     }
                     Text(store.totalIncome.formatted(.currency(code: "USD")))
                         .font(.system(size: 12, weight: .semibold))
@@ -253,18 +253,20 @@ struct CashFlowCard: View {
                     Text("Expenses")
                         .font(.system(size: 10, weight: .medium))
                         .foregroundColor(.secondary)
-                    ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color(.systemGray6))
-                            .frame(height: 28)
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color(hex: "#EF4444")!)
-                            .frame(
-                                width: store.totalIncome > 0 ?
-                                    CGFloat(min(store.totalExpenses / store.totalIncome, 1.0)) * .infinity : 0,
-                                height: 28
-                            )
+                    GeometryReader { geo in
+                        let fraction = store.totalIncome > 0
+                            ? min(store.totalExpenses / store.totalIncome, 1.0)
+                            : 0.0
+                        ZStack(alignment: .leading) {
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color(.systemGray6))
+                                .frame(height: 28)
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color(hex: "#EF4444")!)
+                                .frame(width: max(0, geo.size.width * CGFloat(fraction)), height: 28)
+                        }
                     }
+                    .frame(height: 28)
                     Text(store.totalExpenses.formatted(.currency(code: "USD")))
                         .font(.system(size: 12, weight: .semibold))
                 }

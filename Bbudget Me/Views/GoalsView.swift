@@ -9,7 +9,7 @@ struct GoalsView: View {
     @State private var selectedGoal: SavingsGoal? = nil
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 16) {
                     if store.savingsGoals.isEmpty {
@@ -38,7 +38,8 @@ struct GoalsView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Goals")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
+            .opaqueNavigationBarIfAvailable()
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
@@ -58,6 +59,7 @@ struct GoalsView: View {
                     .environmentObject(store)
             }
         }
+        .navigationViewStyle(.stack)
     }
 }
 
@@ -196,7 +198,7 @@ struct GoalDetailView: View {
     @State private var showDeleteConfirm = false
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
                     // Visual progress
@@ -300,6 +302,7 @@ struct GoalDetailView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 }
 
@@ -348,7 +351,7 @@ struct AddGoalView: View {
                   "#EF4444", "#F59E0B", "#14B8A6", "#F97316", "#84CC16"]
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             Form {
                 Section("Goal Info") {
                     TextField("Goal Name", text: $name)
@@ -435,5 +438,6 @@ struct AddGoalView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 }

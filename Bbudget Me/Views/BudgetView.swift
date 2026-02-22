@@ -25,7 +25,7 @@ struct BudgetView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 20) {
                     // Summary header
@@ -82,6 +82,7 @@ struct BudgetView: View {
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Budget")
             .navigationBarTitleDisplayMode(.inline)
+            .opaqueNavigationBarIfAvailable()
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
@@ -101,6 +102,7 @@ struct BudgetView: View {
                     .environmentObject(store)
             }
         }
+        .navigationViewStyle(.stack)
     }
 }
 
@@ -360,7 +362,7 @@ struct CategoryDetailView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             List {
                 Section {
                     BudgetCategoryCard(category: category)
@@ -389,6 +391,7 @@ struct CategoryDetailView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 }
 
@@ -413,7 +416,7 @@ struct AddCategoryView: View {
                   "#EC4899", "#14B8A6", "#F97316", "#84CC16", "#06B6D4", "#A855F7"]
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             Form {
                 Section("Category Info") {
                     TextField("Category Name", text: $name)
@@ -491,5 +494,6 @@ struct AddCategoryView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 }

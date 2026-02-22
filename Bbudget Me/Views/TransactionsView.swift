@@ -44,7 +44,7 @@ struct TransactionsView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             VStack(spacing: 0) {
                 // Header
                 VStack(spacing: 12) {
@@ -163,13 +163,12 @@ struct TransactionsView: View {
                         }
                     }
                     .listStyle(.insetGrouped)
-                    .scrollContentBackground(.hidden)
-                    .background(Color(.systemGroupedBackground))
                 }
             }
             .background(Color(.systemGroupedBackground))
             .navigationBarHidden(true)
         }
+        .navigationViewStyle(.stack)
     }
 }
 

@@ -12,7 +12,7 @@ struct AccountsView: View {
     var others: [Account] { store.accounts.filter { $0.type != .checking && $0.type != .savings && $0.type != .creditCard } }
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 20) {
                     // Net worth hero
@@ -57,7 +57,8 @@ struct AccountsView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Accounts")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
+            .opaqueNavigationBarIfAvailable()
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
@@ -73,6 +74,7 @@ struct AccountsView: View {
                     .environmentObject(store)
             }
         }
+        .navigationViewStyle(.stack)
     }
 }
 
@@ -105,7 +107,6 @@ struct NetWorthCard: View {
                         .font(.system(size: 13, weight: .medium))
                         .foregroundColor(.white.opacity(0.7))
                         .textCase(.uppercase)
-                        .tracking(1)
                     Text(store.totalNetWorth.formatted(.currency(code: "USD")))
                         .font(.system(size: 34, weight: .bold, design: .rounded))
                         .foregroundColor(.white)
@@ -270,7 +271,7 @@ struct AddAccountView: View {
                   "#065F46", "#1E3A5F", "#4C1D95", "#831843", "#1A202C"]
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             Form {
                 Section("Account Info") {
                     TextField("Account Name", text: $name)
@@ -326,5 +327,6 @@ struct AddAccountView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 }

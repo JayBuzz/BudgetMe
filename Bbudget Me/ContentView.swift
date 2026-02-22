@@ -40,6 +40,27 @@ struct ContentView: View {
     }
 }
 
+// MARK: - Opaque navigation bar (iOS 16+)
+// Type-erased to avoid Swift metadata issues in Preview/JIT.
+
+private struct OpaqueNavBarModifier: ViewModifier {
+    func body(content: Content) -> AnyView {
+        if #available(iOS 16.0, *) {
+            return AnyView(content
+                .toolbarBackground(Color(.systemGroupedBackground), for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar))
+        } else {
+            return AnyView(content)
+        }
+    }
+}
+
+extension View {
+    func opaqueNavigationBarIfAvailable() -> some View {
+        modifier(OpaqueNavBarModifier())
+    }
+}
+
 // MARK: - Custom Tab Bar
 
 struct CustomTabBar: View {
@@ -79,7 +100,7 @@ struct CustomTabBar: View {
                     .offset(y: -10)
                 } else {
                     Button {
-                        withAnimation(.spring(response: 0.3)) {
+                        withAnimation(.spring()) {
                             selectedTab = idx > 2 ? idx - 1 : idx
                         }
                     } label: {
@@ -112,6 +133,8 @@ struct CustomTabBar: View {
     }
 }
 
+// If Canvas Preview crashes (SIGBUS in AppGraph.init), run the app with Product → Run (⌘R) instead.
+// You can also try: Edit Scheme → Run → Options → disable "Previews: JIT" (or "Use JIT for Previews").
 #Preview {
     ContentView()
 }

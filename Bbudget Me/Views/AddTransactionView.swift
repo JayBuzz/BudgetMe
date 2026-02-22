@@ -24,7 +24,7 @@ struct AddTransactionView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
                     // Amount input - large and prominent
@@ -251,6 +251,7 @@ struct AddTransactionView: View {
                 selectedCategoryID = filteredCategories.first?.id
             }
         }
+        .navigationViewStyle(.stack)
     }
 
     func typeColor(_ t: TransactionType) -> Color {
