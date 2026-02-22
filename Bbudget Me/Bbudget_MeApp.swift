@@ -1,9 +1,5 @@
-//
-//  Bbudget_MeApp.swift
-//  Bbudget Me
-//
-//  Created by Joseph Thomas on 2/21/26.
-//
+// Bbudget_MeApp.swift
+// Bbudget Me
 
 import SwiftUI
 
